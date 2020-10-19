@@ -4,22 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+@Entity(name = "pokeSpecies")
 @Getter
 @AllArgsConstructor
-@ToString
 @Table(name = "poke_species")
 public class PokeSpeciesEntity extends AuditEntity implements Serializable {
     private final String color;
     private final String name;
     private final String url;
     private final String idExt;
-    @OneToOne
+    @OneToOne(mappedBy = "species", cascade = CascadeType.ALL)
     private final PokeCharacterEntity pokeCharacter;
 
     protected PokeSpeciesEntity() {

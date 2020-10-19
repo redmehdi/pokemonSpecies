@@ -1,15 +1,16 @@
 package com.red.one.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
-@ToString
+@Setter
+@AllArgsConstructor
 @Table(name = "poke_character")
 public class PokeCharacterEntity extends AuditEntity {
     private final String name;
@@ -17,13 +18,14 @@ public class PokeCharacterEntity extends AuditEntity {
     private final Integer height;
     private final Integer weight;
     @OneToOne
-    private final PokeSpeciesEntity speciesEntity;
+    @JoinColumn(name = "species_id")
+    private PokeSpeciesEntity species;
 
     protected PokeCharacterEntity() {
         this.name = null;
         this.baseExperience = null;
         this.height = null;
         this.weight = null;
-        this.speciesEntity = null;
+        this.species = null;
     }
 }

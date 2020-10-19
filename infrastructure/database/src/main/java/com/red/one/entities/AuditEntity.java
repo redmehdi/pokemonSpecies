@@ -17,7 +17,7 @@ import javax.persistence.Id;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditEntity {
 
-	@Id @GeneratedValue Long id;
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY) Long id;
 	@CreatedBy
 	private String createdBy;
 	@LastModifiedBy
