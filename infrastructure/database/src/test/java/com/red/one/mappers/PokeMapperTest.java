@@ -32,7 +32,7 @@ public class PokeMapperTest {
 
     @Test
     public void mapToDomainSpecies_whenNullParams_shouldExpectedValues() {
-        PokeSpeciesEntity expected = new PokeSpeciesEntity(null, null, null,null,null);
+        final PokeSpeciesEntity expected = new PokeSpeciesEntity(null, null, null,null,null);
 
         final PokeSpecies result = mapper.map(expected);
 
@@ -45,8 +45,8 @@ public class PokeMapperTest {
 
     @Test
     public void mapToDomainSpecies_whenNotNullParams_shouldExpectedValues() {
-        PokeCharacterEntity pokeCharacter= new PokeCharacterEntity(null,null,null,null,null);
-        PokeSpeciesEntity expected = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, pokeCharacter);
+        final PokeCharacterEntity pokeCharacter= new PokeCharacterEntity(null,null,null,null,null);
+        final PokeSpeciesEntity expected = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, pokeCharacter);
 
         final PokeSpecies result = mapper.map(expected);
 
@@ -59,8 +59,8 @@ public class PokeMapperTest {
 
     @Test
     public void mapToDomainSpecies_whenNullColor_shouldExpectedValues() {
-        PokeCharacterEntity pokeCharacter= new PokeCharacterEntity(null,null,null,null,null);
-        PokeSpeciesEntity expected = new PokeSpeciesEntity(null, NAME, URL, idExt, pokeCharacter);
+        final PokeCharacterEntity pokeCharacter= new PokeCharacterEntity(null,null,null,null,null);
+        final PokeSpeciesEntity expected = new PokeSpeciesEntity(null, NAME, URL, idExt, pokeCharacter);
 
         final PokeSpecies result = mapper.map(expected);
 
@@ -73,8 +73,8 @@ public class PokeMapperTest {
 
     @Test
     public void mapToDomainSpecies_whenNullName_shouldExpectedValues() {
-        PokeCharacterEntity pokeCharacter= new PokeCharacterEntity(null,null,null,null,null);
-        PokeSpeciesEntity expected = new PokeSpeciesEntity(COLOR, null, URL, idExt, pokeCharacter);
+        final PokeCharacterEntity pokeCharacter= new PokeCharacterEntity(null,null,null,null,null);
+        final PokeSpeciesEntity expected = new PokeSpeciesEntity(COLOR, null, URL, idExt, pokeCharacter);
 
         final PokeSpecies result = mapper.map(expected);
 
@@ -87,7 +87,7 @@ public class PokeMapperTest {
 
     @Test
     public void mapToDomainSpecies_whenNullPokeCharacter_shouldExpectedValues() {
-        PokeSpeciesEntity expected = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
+        final PokeSpeciesEntity expected = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
 
         final PokeSpecies result = mapper.map(expected);
 
@@ -100,7 +100,7 @@ public class PokeMapperTest {
 
     @Test
     public void mapToDomainCharacter_whenNullParams_shouldExpectedValues() {
-        PokeCharacterEntity expected = new PokeCharacterEntity(null, null, null,null,null);
+        final PokeCharacterEntity expected = new PokeCharacterEntity(null, null, null,null,null);
 
         final PokeCharacter result = mapper.map(expected);
 
@@ -114,8 +114,8 @@ public class PokeMapperTest {
 
     @Test
     public void mapToDomainCharacter_whenNotNullParams_shouldExpectedValues() {
-        PokeSpeciesEntity speciesEntity = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
-        PokeCharacterEntity expected = new PokeCharacterEntity(NAME, 3, 4,5,speciesEntity);
+        final PokeSpeciesEntity speciesEntity = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
+        final PokeCharacterEntity expected = new PokeCharacterEntity(NAME, 3, 4,5,speciesEntity);
 
         final PokeCharacter result = mapper.map(expected);
 
@@ -129,8 +129,8 @@ public class PokeMapperTest {
 
     @Test
     public void mapToDomainCharacter_whenNullName_shouldExpectedValues() {
-        PokeSpeciesEntity speciesEntity = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
-        PokeCharacterEntity expected = new PokeCharacterEntity(null, 3, 4,5,speciesEntity);
+        final PokeSpeciesEntity speciesEntity = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
+        final PokeCharacterEntity expected = new PokeCharacterEntity(null, 3, 4,5,speciesEntity);
 
         final PokeCharacter result = mapper.map(expected);
 
@@ -144,8 +144,8 @@ public class PokeMapperTest {
 
     @Test
     public void mapToDomainCharacter_whenNullBaseExperience_shouldExpectedValues() {
-        PokeSpeciesEntity speciesEntity = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
-        PokeCharacterEntity expected = new PokeCharacterEntity(NAME, null, 4,5,speciesEntity);
+        final PokeSpeciesEntity speciesEntity = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
+        final PokeCharacterEntity expected = new PokeCharacterEntity(NAME, null, 4,5,speciesEntity);
 
         final PokeCharacter result = mapper.map(expected);
 
@@ -159,8 +159,8 @@ public class PokeMapperTest {
 
     @Test
     public void mapToDomainCharacter_whenNullHeight_shouldExpectedValues() {
-        PokeSpeciesEntity speciesEntity = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
-        PokeCharacterEntity expected = new PokeCharacterEntity(NAME, 43, null,5,speciesEntity);
+        final PokeSpeciesEntity speciesEntity = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
+        final PokeCharacterEntity expected = new PokeCharacterEntity(NAME, 43, null,5,speciesEntity);
 
         final PokeCharacter result = mapper.map(expected);
 
@@ -174,8 +174,8 @@ public class PokeMapperTest {
 
     @Test
     public void mapToDomainCharacter_whenNullWeight_shouldExpectedValues() {
-        PokeSpeciesEntity speciesEntity = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
-        PokeCharacterEntity expected = new PokeCharacterEntity(NAME, 43, 324,null,speciesEntity);
+        final PokeSpeciesEntity speciesEntity = new PokeSpeciesEntity(COLOR, NAME, URL, idExt, null);
+        final PokeCharacterEntity expected = new PokeCharacterEntity(NAME, 43, 324,null,speciesEntity);
 
         final PokeCharacter result = mapper.map(expected);
 

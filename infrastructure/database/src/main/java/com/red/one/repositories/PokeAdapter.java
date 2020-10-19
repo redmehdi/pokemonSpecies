@@ -29,18 +29,21 @@ public class PokeAdapter implements PokePort {
         return repository.findById(id).map(mapper::map);
     }
 
+    @Override
     public List<PokeSpecies> findTop5ByHeight() {
         return repository.findTop5ByHeight()
                 .stream().filter(Objects::nonNull)
                 .map(this.mapper::map).collect(Collectors.toList());
     }
 
+    @Override
     public List<PokeSpecies> findTop5ByWeight() {
         return repository.findTop5ByWeight()
                 .stream().filter(Objects::nonNull)
                 .map(this.mapper::map).collect(Collectors.toList());
     }
 
+    @Override
     public List<PokeSpecies> findTop5ByBaseExperience() {
         return repository.findTop5ByBaseExperience()
                 .stream().filter(Objects::nonNull)

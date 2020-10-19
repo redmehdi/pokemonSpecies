@@ -44,7 +44,7 @@ pokeCharacterEntity.setSpecies(pokeSpeciesEntity);
         repository.save(pokeSpeciesEntity2);
         repository.save(pokeSpeciesEntity3);
 
-        System.out.println(repository.findTop5ByHeight());
+        System.out.println(repository.findTop5ByHeight().get());
 
     }
 }

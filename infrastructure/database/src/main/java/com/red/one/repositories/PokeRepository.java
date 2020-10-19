@@ -14,6 +14,6 @@ public interface PokeRepository extends CrudRepository<PokeSpeciesEntity, Long> 
     @Query(value = "SELECT * FROM poke_species s inner join poke_character c ON s.id = c.species_id ORDER BY c.weight ASC limit 5", nativeQuery = true)
     List<PokeSpeciesEntity> findTop5ByWeight();
 
-    @Query(value = "SELECT * FROM poke_species s inner join poke_character c ON s.id = c.species_id ORDER BY c.baseExperience ASC limit 5", nativeQuery = true)
+    @Query(value = "SELECT * FROM poke_species s inner join poke_character c ON s.id = c.species_id ORDER BY c.base_experience ASC limit 5", nativeQuery = true)
     List<PokeSpeciesEntity> findTop5ByBaseExperience();
 }
