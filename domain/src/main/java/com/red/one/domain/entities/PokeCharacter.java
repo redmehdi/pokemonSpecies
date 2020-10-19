@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
+@AllArgsConstructor
 public class PokeCharacter {
     private Long id;
     private String name;

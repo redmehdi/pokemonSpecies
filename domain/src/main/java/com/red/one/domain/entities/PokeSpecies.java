@@ -9,6 +9,7 @@ import java.util.UUID;
 @Setter
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
+@AllArgsConstructor
 public class PokeSpecies {
     private Long id;
     private String color;

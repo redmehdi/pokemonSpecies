@@ -1,15 +1,29 @@
 package com.red.one.repositories;
 
-public class PokeAdapterTest {
-/**
-    @Mock
-    private OrderRepository repository;
+import com.red.one.PokeDataset;
+import com.red.one.domain.entities.PokeSpecies;
+import com.red.one.entities.PokeSpeciesEntity;
+import com.red.one.mappers.PokeMapper;
+import com.red.one.mappers.PokeMapperImpl;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.mockito.*;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class PokeAdapterTest {
     @Mock
-    private OrderMapper mapper;
+    private PokeRepository repository;
+
+    @Spy
+    private PokeMapper mapper = new PokeMapperImpl();
 
     @InjectMocks
-    private OrderAdapter port;
+    private PokeAdapter port;
 
     @Before
     public void onBefore() throws Exception {
@@ -22,81 +36,164 @@ public class PokeAdapterTest {
     }
 
     @Test
-    public void findById_whenNotNull_shouldExpectedValue() {
-        final Order expectedOrder = OrderDataset.getOrder(UUID.randomUUID(),
-                new ArrayList<>(), OrderStatus.COMPLETED, 1L);
-        mockMapperFromPersistence(expectedOrder);
+    public void findTop5ByHeight_whenNotNull_shouldExpectedSize() {
+        final PokeSpeciesEntity[] expectedEntities = PokeDataset.getSpeciesEntity();
+        int expectedSize = expectedEntities.length;
+        List<PokeSpeciesEntity> values = Arrays.asList(expectedEntities);
+        mockFindTop5ByHeight(values);
 
-        final OrderEntity expectedEntity = OrderDataset.getOrderEntity(UUID.randomUUID(),
-                new ArrayList<>(), OrderStatus.COMPLETED, 1L);
-        mockFindBy(Mono.just(expectedEntity));
+        final List<PokeSpecies> result = port.findTop5ByHeight();
 
-
-        final Mono<Order> result = port.findById(UUID.randomUUID());
-
-        StepVerifier
-                .create(result)
-                .expectNext(expectedOrder)
-                .expectComplete()
-                .verify();
+        Assertions.assertNotNull(result);
+        Assert.assertTrue(result.size() == expectedSize);
     }
 
     @Test
-    public void findById_whenEmpty_shouldExpectedValue() {
-        final Order expectedOrder = OrderDataset.getOrder(UUID.randomUUID(),
-                new ArrayList<>(), OrderStatus.COMPLETED, 1L);
-        mockMapperFromPersistence(expectedOrder);
+    public void findTop5ByHeight_whenNotNull_shouldExpectedValues() {
+        final PokeSpeciesEntity[] expectedEntities = PokeDataset.getSpeciesEntity();
+        List<PokeSpeciesEntity> values = Arrays.asList(expectedEntities);
+        mockFindTop5ByHeight(values);
 
-        mockFindBy(Mono.empty());
+        final List<PokeSpecies> result = port.findTop5ByHeight();
 
-
-        final Mono<Order> result = port.findById(UUID.randomUUID());
-
-        StepVerifier
-                .create(result)
-                .expectNextCount(0)
-                .expectComplete()
-                .verify();
+        Assertions.assertNotNull(result);
+        PokeSpecies pokeSpecies = result.get(0);
+        Assert.assertNull(pokeSpecies.getId());
+        Assert.assertEquals(expectedEntities[0].getColor(), pokeSpecies.getColor());
+        Assert.assertEquals(expectedEntities[0].getName(), pokeSpecies.getName());
     }
-
 
     @Test
-    public void save_whenNotNull_shouldExpectedValue() {
-        final Order expectedOrder = OrderDataset.getOrder(UUID.randomUUID(),
-                new ArrayList<>(), OrderStatus.COMPLETED, 1L);
-        mockMapperFromPersistence(expectedOrder);
+    public void findTop5ByHeight_whenNull_shouldExpectedEmptyList() {
+        mockFindTop5ByHeight(Collections.EMPTY_LIST);
 
+        final List<PokeSpecies> result = port.findTop5ByHeight();
 
-        final OrderEntity expectedEntity = OrderDataset.getOrderEntity(UUID.randomUUID(),
-                new ArrayList<>(), OrderStatus.COMPLETED, 1L);
-        mockMapperToPersistence(expectedEntity);
-        mockSave(Mono.just(expectedEntity));
-
-
-        final Mono<Order> result = port.save(expectedOrder);
-
-        StepVerifier
-                .create(result)
-                .expectNext(expectedOrder)
-                .expectComplete()
-                .verify();
+        Assertions.assertEquals(Collections.EMPTY_LIST, result);
     }
 
-    private void mockMapperFromPersistence(final Order order) {
-        when(mapper.map(any(OrderEntity.class))).thenReturn(order);
+    @Test
+    public void findTop5ByHeight_whenNotNull_shouldCallOnceRepository() {
+        final PokeSpeciesEntity[] expectedEntities = PokeDataset.getSpeciesEntity();
+        List<PokeSpeciesEntity> values = Arrays.asList(expectedEntities);
+        mockFindTop5ByHeight(values);
+
+        final List<PokeSpecies> result = port.findTop5ByHeight();
+
+        Assertions.assertNotNull(result);
+        Mockito.verify(repository, Mockito.times(1)).findTop5ByHeight();
+        Mockito.verify(repository, Mockito.never()).findTop5ByWeight();
+        Mockito.verify(repository, Mockito.never()).findTop5ByBaseExperience();
     }
 
-    private void mockMapperToPersistence(final OrderEntity order) {
-        when(mapper.map(any(Order.class))).thenReturn(order);
+    @Test(expected = RuntimeException.class)
+    public void findTop5ByHeight_whenNotNull_shouldExpectedException() {
+        mockFindTop5ByHeight(new RuntimeException());
+
+        port.findTop5ByHeight();
     }
 
-    private void mockFindBy(final Mono<OrderEntity> entity) {
-        when(repository.findById(any(UUID.class)))
-                .thenReturn(entity);
+    @Test
+    public void findTop5ByHeight_whenNotNull_shouldCall5TimesMapper() {
+        final PokeSpeciesEntity[] expectedEntities = PokeDataset.getSpeciesEntity();
+        final int expectedSize = expectedEntities.length;
+        List<PokeSpeciesEntity> values = Arrays.asList(expectedEntities);
+        mockFindTop5ByHeight(values);
+
+        final List<PokeSpecies> result = port.findTop5ByHeight();
+
+        Assertions.assertNotNull(result);
+        Mockito.verify(mapper, Mockito.times(expectedSize)).map(Mockito.any(PokeSpeciesEntity.class));
+        Mockito.verify(repository, Mockito.never()).findTop5ByWeight();
+        Mockito.verify(repository, Mockito.never()).findTop5ByBaseExperience();
     }
 
-    private void mockSave(final Mono<OrderEntity> entity) {
-        when(repository.save(any(OrderEntity.class)))
-                .thenReturn(entity);
-    }*/
+    @Test
+    public void findTop5ByWeight_whenNotNull_shouldExpectedSize() {
+        final PokeSpeciesEntity[] expectedEntities = PokeDataset.getSpeciesEntity();
+        int expectedSize = expectedEntities.length;
+        List<PokeSpeciesEntity> values = Arrays.asList(expectedEntities);
+        mockFindTop5ByWeight(values);
+
+        final List<PokeSpecies> result = port.findTop5ByWeight();
+
+        Assertions.assertNotNull(result);
+        Assert.assertTrue(result.size() == expectedSize);
+    }
+
+    @Test
+    public void findTop5ByWeight_whenNotNull_shouldExpectedValues() {
+        final PokeSpeciesEntity[] expectedEntities = PokeDataset.getSpeciesEntity();
+        List<PokeSpeciesEntity> values = Arrays.asList(expectedEntities);
+        mockFindTop5ByWeight(values);
+
+        final List<PokeSpecies> result = port.findTop5ByWeight();
+
+        Assertions.assertNotNull(result);
+        PokeSpecies pokeSpecies = result.get(0);
+        Assert.assertNull(pokeSpecies.getId());
+        Assert.assertEquals(expectedEntities[0].getColor(), pokeSpecies.getColor());
+        Assert.assertEquals(expectedEntities[0].getName(), pokeSpecies.getName());
+    }
+
+    @Test
+    public void findTop5ByWeight_whenNull_shouldExpectedEmptyList() {
+        mockFindTop5ByWeight(Collections.EMPTY_LIST);
+
+        final List<PokeSpecies> result = port.findTop5ByWeight();
+
+        Assertions.assertEquals(Collections.EMPTY_LIST, result);
+    }
+
+    @Test
+    public void findTop5ByWeight_whenNotNull_shouldCallOnceRepository() {
+        final PokeSpeciesEntity[] expectedEntities = PokeDataset.getSpeciesEntity();
+        List<PokeSpeciesEntity> values = Arrays.asList(expectedEntities);
+        mockFindTop5ByWeight(values);
+
+        final List<PokeSpecies> result = port.findTop5ByWeight();
+
+        Assertions.assertNotNull(result);
+        Mockito.verify(repository, Mockito.times(1)).findTop5ByWeight();
+        Mockito.verify(repository, Mockito.never()).findTop5ByHeight();
+        Mockito.verify(repository, Mockito.never()).findTop5ByBaseExperience();
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void findTop5ByWeight_whenNotNull_shouldExpectedException() {
+        mockFindTop5ByWeight(new RuntimeException());
+
+        port.findTop5ByWeight();
+    }
+
+    @Test
+    public void findTop5ByWeight_whenNotNull_shouldCall5TimesMapper() {
+        final PokeSpeciesEntity[] expectedEntities = PokeDataset.getSpeciesEntity();
+        final int expectedSize = expectedEntities.length;
+        List<PokeSpeciesEntity> values = Arrays.asList(expectedEntities);
+        mockFindTop5ByWeight(values);
+
+        final List<PokeSpecies> result = port.findTop5ByWeight();
+
+        Assertions.assertNotNull(result);
+        Mockito.verify(mapper, Mockito.times(expectedSize)).map(Mockito.any(PokeSpeciesEntity.class));
+        Mockito.verify(repository, Mockito.never()).findTop5ByHeight();
+        Mockito.verify(repository, Mockito.never()).findTop5ByBaseExperience();
+    }
+
+    private void mockFindTop5ByHeight(final List<PokeSpeciesEntity> values) {
+        Mockito.when(repository.findTop5ByHeight()).thenReturn(values);
+    }
+
+    private void mockFindTop5ByHeight(final RuntimeException values) {
+        Mockito.when(repository.findTop5ByHeight()).thenThrow(values);
+    }
+
+    private void mockFindTop5ByWeight(final List<PokeSpeciesEntity> values) {
+        Mockito.when(repository.findTop5ByWeight()).thenReturn(values);
+    }
+
+    private void mockFindTop5ByWeight(final RuntimeException values) {
+        Mockito.when(repository.findTop5ByWeight()).thenThrow(values);
+    }
 }
