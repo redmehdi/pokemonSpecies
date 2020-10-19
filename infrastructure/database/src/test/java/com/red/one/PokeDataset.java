@@ -46,4 +46,14 @@ public final class PokeDataset {
                 new PokeCharacterEntity("name5", 3, 3, 88, null)
         };
     }
+
+    public static PokeSpeciesEntity getSpecie(final Long id, final String color, final String name, final String url,
+                                              final String idExt, final PokeCharacterEntity pokeCharacter) {
+        return new PokeSpeciesEntity(color, name, url, idExt, pokeCharacter);
+    }
+
+    public static PokeCharacterEntity getCharacter(final Long id, final String name, final Integer baseExperience,
+                                                   final Integer height, final Integer weight, final PokeSpeciesEntity pokeSpeciesEntity) {
+        return new PokeCharacterEntity(name, baseExperience, height, weight, pokeSpeciesEntity);
+    }
 }
