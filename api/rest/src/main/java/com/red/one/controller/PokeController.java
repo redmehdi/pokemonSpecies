@@ -20,24 +20,33 @@ public class PokeController {
         this.mapper = mapper;
     }
 
-    @GetMapping(value = "/{id}")
-    @ResponseBody
-    PokeSpeciesDto getPokemon(@PathVariable("id") Long id) {
-        return service.getPokemonList(id).map(mapper::map).get();
-    }
-
+    /**
+     * Retrieves top 5 height pokemon list
+     *
+     * @return list of pokemon or empty.
+     */
     @GetMapping(value = "/height")
     @ResponseBody
     List<PokeSpeciesDto> getTop5ByHeight() {
         return service.getTop5ByHeight().stream().map(this.mapper::map).collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves top 5 weight pokemon list
+     *
+     * @return list of pokemon or empty.
+     */
     @GetMapping(value = "/weight")
     @ResponseBody
     List<PokeSpeciesDto> getTop5ByWeight() {
         return service.getTop5ByBaseExperience().stream().map(this.mapper::map).collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves top 5 base experience pokemon list
+     *
+     * @return list of pokemon or empty.
+     */
     @GetMapping(value = "/base-experience")
     @ResponseBody
     List<PokeSpeciesDto> getTop5ByBaseExperience() {
