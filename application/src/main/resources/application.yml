@@ -1,15 +1,17 @@
 logging:
   level:
-    root: DEBUG
+    root: INFO
 spring:
   h2:
     console:
-      enabled: true
+      enabled: false
+  application:
+    name: Pokemon-application
+
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
+    url: jdbc:mysql://localhost:6033/pokemon
+    username: root
+    password: root
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
